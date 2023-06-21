@@ -2,23 +2,23 @@ import React, { useContext, useMemo } from 'react';
 import { AppContext } from './TodoList';
 import TaskItem from './TaskItem';
 
-function TaskList({ searchTerm, filter }) {
-  const { tasks, dispatch } = useContext(AppContext);
+function TaskList({ searchTerm, filter, dispatch }) {
+  const { tasks } = useContext(AppContext);
 
   const toggleTaskCompletion = (taskId) => {
     dispatch({ type: 'TOGGLE_TASK_COMPLETION', payload: taskId });
   };
 
-  const editTask = (taskId, title, dueDate) => {
-    dispatch({ type: 'EDIT_TASK', payload: { id: taskId, title, dueDate } });
-  };
-
   const saveTask = (taskId, title, dueDate) => {
-    dispatch({ type: 'SAVE_TASK', payload: { id: taskId, title, dueDate } });
+    dispatch({ type: 'EDIT_TASK', payload: { id: taskId, title, dueDate } });
   };
 
   const deleteTask = (taskId) => {
     dispatch({ type: 'DELETE_TASK', payload: taskId });
+  };
+  
+  const editTask = (taskId, title, dueDate) => {
+    dispatch({ type: 'EDIT_TASK', payload: { id: taskId, title, dueDate } });
   };
 
   const filteredTasks = useMemo(() => {
@@ -41,18 +41,20 @@ function TaskList({ searchTerm, filter }) {
   }, [tasks, filter, searchTerm]);
 
   return (
-    <ul>
-      {filteredTasks.map((task) => (
-        <TaskItem
-          key={task.id}
-          task={task}
-          toggleTaskCompletion={toggleTaskCompletion}
-          editTask={editTask}
-          saveTask={saveTask}
-          deleteTask={deleteTask}
-        />
-      ))}
-    </ul>
+    <div className="">
+      <ul className="space-y-3">
+        {filteredTasks.map((task) => (
+          <TaskItem
+            key={task.id}
+            task={task}
+            toggleTaskCompletion={toggleTaskCompletion}
+            editTask={editTask}
+            saveTask={saveTask}
+            deleteTask={deleteTask}
+          />
+        ))}
+      </ul>
+    </div>
   );
 }
 

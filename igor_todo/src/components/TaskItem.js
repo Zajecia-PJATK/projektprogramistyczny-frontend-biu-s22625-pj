@@ -26,46 +26,53 @@ function TaskItem({ task, toggleTaskCompletion, saveTask, deleteTask }) {
     deleteTask(task.id);
   };
 
-console.log(task)
-
   return (
-    <li>
-      <input
-        type="checkbox"
-        checked={task.completed}
-        onChange={() => toggleTaskCompletion(task.id)}
-      />
-
-      {isEdited ? (
-        <>
-          <input
-            type="text"
-            value={updatedTitle}
-            onChange={(e) => setUpdatedTitle(e.target.value)}
-            ref={titleInputRef}
-          />
-          <input
-            type="date"
-            value={updatedDueDate}
-            onChange={(e) => setUpdatedDueDate(e.target.value)}
-          />
-          <button onClick={handleSaveClick}>
+    <li className="flex items-center justify-between py-2 bg-blue-100 rounded-md px-4">
+      <div className="flex justify-between flex items-center">
+        {isEdited ? (
+          <div className="flex">
+            <div className="flex justify-between flex items-center">
+              <input
+                type="text"
+                value={updatedTitle}
+                onChange={(e) => setUpdatedTitle(e.target.value)}
+                ref={titleInputRef}
+                className="mr-2 border rounded-md px-2 py-1 focus:outline-none focus:ring focus:border-blue-300"
+              />
+              <input
+                type="date"
+                value={updatedDueDate}
+                onChange={(e) => setUpdatedDueDate(e.target.value)}
+                className="mr-2 border rounded-md px-2 py-1 focus:outline-none focus:ring focus:border-blue-300"
+              />
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center">
+            <span className={`${task.completed ? 'line-through' : ''} flex-grow`}>{task.title}</span>
+            <span className="ml-4">{task.dueDate}</span>
+          </div>
+        )}
+      </div>
+      <div className="flex justify-between flex items-center">
+        <input
+          type="checkbox"
+          onChange={() => toggleTaskCompletion(task.id)}
+          checked={task.completed}
+        />
+        {isEdited ? (
+          <button onClick={handleSaveClick} className="text-blue-500 hover:text-blue-700 ml-4">
             <FaSave />
           </button>
-        </>
-      ) : (
-        <>
-          <span>{task.title}</span>
-          <span>{task.dueDate}</span>
-          <button onClick={handleEditClick}>
+        ) : (
+          <button onClick={handleEditClick} className="text-blue-500 hover:text-blue-700 ml-4">
             <FaEdit />
           </button>
-        </>
-      )}
-
-      <button onClick={handleDeleteClick}>
-        <FaTrash />
-      </button>
+        )}
+        <button onClick={handleDeleteClick} className="text-red-500 hover:text-red-700 ml-4">
+          <FaTrash />
+        </button>
+      </div>
     </li>
   );
 }
